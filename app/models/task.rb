@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
 class Task < ApplicationRecord
+  before_validation :assign_title, unless: :title_present
+
   MAX_TITLE_LENGTH = 125
   validates :title, presence: true, length: { maximum: MAX_TITLE_LENGTH }
   validates :slug, uniqueness: true
   validate :slug_not_changed
-
-  before_create :set_slug
 
   private
 
@@ -31,5 +31,9 @@ class Task < ApplicationRecord
       if slug_changed? && self.persisted?
         errors.add(:slug, t("task.slug.immutable"))
       end
+    end
+
+    def title_present
+      self.title.present?
     end
 end
