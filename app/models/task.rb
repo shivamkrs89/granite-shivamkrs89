@@ -3,12 +3,13 @@
 class Task < ApplicationRecord
   belongs_to :assigned_user, foreign_key: "assigned_user_id", class_name: "User"
 
-  before_validation :assign_title, unless: :title_present
+  # before_validation :assign_title, unless: :title_present
 
   MAX_TITLE_LENGTH = 125
   validates :title, presence: true, length: { maximum: MAX_TITLE_LENGTH }
   validates :slug, uniqueness: true
   validate :slug_not_changed
+  before_create :set_slug
 
   private
 
