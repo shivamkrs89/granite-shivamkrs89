@@ -18,6 +18,7 @@ class Task < ApplicationRecord
   validates :slug, uniqueness: true
   validate :slug_not_changed
   before_create :set_slug
+  after_create :log_task_details
 
   private
 
@@ -57,5 +58,9 @@ class Task < ApplicationRecord
 
     def title_present
       self.title.present?
+    end
+
+    def log_task_details
+      TaskLoggerJob.perform_later(self)
     end
 end
