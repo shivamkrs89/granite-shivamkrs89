@@ -74,3 +74,8 @@ gem "react-rails"
 gem "pundit"
 
 gem "sidekiq"
+
+gem "sidekiq-cron"
+
+# For opening mails in development env
+gem "letter_opener", group: :development
