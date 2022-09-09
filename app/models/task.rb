@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Task < ApplicationRecord
+  scope :accessible_to, ->(user_id) { where("task_owner_id = ? OR assigned_user_id = ?", user_id, user_id) }
+
   enum status: { unstarred: "unstarred", starred: "starred" }
 
   RESTRICTED_ATTRIBUTES = %i[title task_owner_id assigned_user_id]
@@ -14,6 +16,7 @@ class Task < ApplicationRecord
   # before_validation :assign_title, unless: :title_present
 
   MAX_TITLE_LENGTH = 125
+
   validates :title, presence: true, length: { maximum: MAX_TITLE_LENGTH }
   validates :slug, uniqueness: true
   validate :slug_not_changed
