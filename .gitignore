@@ -42,3 +42,5 @@ node_modules
 yarn-debug.log*
 .yarn-integrity
 coverage
+
+/config/database.yml
